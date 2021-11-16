@@ -23,13 +23,17 @@ CREATE TABLE answers (
   helpfulness smallint DEFAULT 0,
   question_id INT NOT NULL,
   reported BOOLEAN NOT NULL DEFAULT false,
-  FOREIGN KEY (question_id) REFERENCES questions(question_id)
+  FOREIGN KEY (question_id) REFERENCES questions(question_id) ON DELETE CASCADE
 );
 CREATE TABLE photos (
   photo_id SERIAL PRIMARY KEY,
   url TEXT NOT NULL,
   answer_id INT NOT NULL,
-  FOREIGN KEY (answer_id) REFERENCES answers(answer_id)
+  FOREIGN KEY (answer_id) REFERENCES answers(answer_id) ON DELETE CASCADE
 );
 /* foreign keys for fake users for answerer/asker
  varchar ////   foreign key consideration //////texts */
+
+ INSERT INTO questions( question_body, asker_name, product_id) VALUES ('what does it do?', 'bug', 1);
+
+ INSERT INTO answers( body, answerer_name, question_id) VALUES ('it works', 'a differen bug', 1)

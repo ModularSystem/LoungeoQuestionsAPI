@@ -4,18 +4,21 @@
   "description": "a new API for serving requests to the /questions and /answers endpoints for Loungeo",
   "main": "index.js",
   "dependencies": {
+    "chai": "^4.3.4",
     "express": "^4.17.1",
     "mongoose": "^6.0.13",
-    "pg": "^8.7.1"
+    "pg": "^8.7.1",
+    "supertest": "^6.1.6"
   },
   "devDependencies": {
     "eslint": "^8.2.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.3",
+    "mocha": "^9.1.3",
     "nodemon": "^2.0.15"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "start": "npx nodemon server/index.js",
     "initdb": "psql -U postgres < server/db/db.sql"
   },
