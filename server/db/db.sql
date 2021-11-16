@@ -1,6 +1,10 @@
+
 DROP DATABASE IF EXISTS qanda;
 CREATE DATABASE qanda;
-USE qanda;
+\c qanda;
+/* psql -U postgres < server/db/schema.sql  THIS ONE!!!*/
+DROP TABLE IF EXISTS photos;
+DROP TABLE IF EXISTS answers;
 DROP TABLE IF EXISTS questions;
 CREATE TABLE questions (
   question_id SERIAL PRIMARY KEY,
@@ -11,7 +15,6 @@ CREATE TABLE questions (
   reported BOOLEAN NOT NULL DEFAULT false,
   product_id INT NOT NULL
 );
-DROP TABLE IF EXISTS answers;
 CREATE TABLE answers (
   answer_id SERIAL PRIMARY KEY,
   body TEXT NOT NULL,
@@ -22,10 +25,11 @@ CREATE TABLE answers (
   reported BOOLEAN NOT NULL DEFAULT false,
   FOREIGN KEY (question_id) REFERENCES questions(question_id)
 );
-DROP TABLE IF EXISTS photos;
 CREATE TABLE photos (
   photo_id SERIAL PRIMARY KEY,
-  url: TEXT NOT NULL,
+  url TEXT NOT NULL,
   answer_id INT NOT NULL,
-  FOREIGN KEY (answer_id) REFERENCES qustions(answer_id)
-)
+  FOREIGN KEY (answer_id) REFERENCES answers(answer_id)
+);
+/* foreign keys for fake users for answerer/asker
+ varchar ////   foreign key consideration //////texts */
