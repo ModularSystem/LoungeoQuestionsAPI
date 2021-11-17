@@ -2,11 +2,12 @@
 
 module.exports = {
 
-addQuestion: () => {
+insert: () => {
   console.log('question added')
 },
 
-deleteQuestion: () => {
+delete: () => {
   console.log('question deleted')
 }
+
 }

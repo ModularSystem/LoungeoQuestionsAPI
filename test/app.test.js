@@ -1,5 +1,4 @@
 const {expect} = require('chai')
-// const request = require('request')
 const request = require('supertest')
 const app = require('../server/app.js')
 describe('testing tests', () => {
