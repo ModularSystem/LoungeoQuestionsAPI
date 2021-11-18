@@ -4,6 +4,16 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const { Pool, Client } = require('pg');
+const credentials = {
+  user: 'postgres',
+  host: 'localhost',
+  database: 'qanda',
+  password: 'vicfirthh11',
+  port: 5432,
+};
+const pool = new Pool(credentials)
+
 app.get('/', (req, res) => {
   res.send('Get');
 });
@@ -13,8 +23,9 @@ app.post('/', (req, res) => {
   res.send('Post');
 });
 
-app.post('/questions', (req, res) => {
-  question.insert()
+app.get('/questions', async (req, res) => {
+  const questions = await question.insert(pool);
+  res.status(200).send(questions)
 })
 
 module.exports = app;
