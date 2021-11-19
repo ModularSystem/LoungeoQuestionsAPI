@@ -4,7 +4,9 @@ module.exports = {
 
   select: async (params) => {
     const { questionID, count, offset } = params;
-    const result = await pool.query(`SELECT * FROM answers WHERE question_id = ${questionID} LIMIT ${count} OFFSET ${offset}`);
+    const result = await pool.query(`SELECT * FROM answers WHERE question_id = ${questionID} LIMIT ${count} OFFSET ${offset}`)
+      .catch((e) => e);
+    if (result instanceof Error) return result;
     return result.rows;
   },
 

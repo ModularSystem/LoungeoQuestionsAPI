@@ -47,24 +47,25 @@ app.post('/qa/questions', async (req, res) => {
 
 app.get('/qa/questions/:question_id/answers', async (req, res) => {
   const { question_id: questionID } = req.params;
-  const params = { questionID, ...req.body };
+  let { page, count } = req.query;
+  page = page || 1;
+  count = count || 5;
+  const offset = count * (page - 1);
+  const params = {
+    questionID, page, count, offset,
+  };
   const result = await answer.select(params);
   if (result instanceof Error) {
     res.status(404).send();
   } else {
-    res.status(200).send();
+    res.status(200).send(result);
   }
 });
 
 app.post('/qa/questions/:question_id/answers', async (req, res) => {
   const { question_id: questionID } = req.params;
-  let { page, count } = req.query;
-  page = page || 1;
-  count = count || 5;
-  const offset = count * (page - 1) + 1;
-  const params = {
-    questionID, page, count, offset,
-  };
+  const params = { questionID, ...req.body };
+
   const result = await answer.insert(params);
   if (result instanceof Error) {
     res.status(409).send();
