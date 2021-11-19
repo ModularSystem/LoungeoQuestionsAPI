@@ -7,7 +7,6 @@ const credentials = {
   password: 'vicfirthh11',
   port: 5432,
 };
-/////// DIFFERENCE BETWEEN IMPORT AND POST
 
 async function query() {
   const pool = new Pool(credentials);

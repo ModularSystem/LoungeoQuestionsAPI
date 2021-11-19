@@ -5,8 +5,8 @@
 
 
 SELECT setval(pg_get_serial_sequence('questions', 'question_id'), (SELECT MAX(question_id) from "questions"));
-SELECT setval(pg_get_serial_sequence('answers', 'answer_id'), (SELECT MAX(answer_id) from "answers"));
-SELECT setval(pg_get_serial_sequence('answer_photos', 'photo_id'), (SELECT MAX(answer_id) from "answer_photos"));
+SELECT setval(pg_get_serial_sequence('answers', 'id'), (SELECT MAX(id) from "answers"));
+SELECT setval(pg_get_serial_sequence('answer_photos', 'photo_id'), (SELECT MAX(photo_id) from "answer_photos"));
 
 -- INSERT INTO users(name, email) SELECT DISTINCT name, email FROM questions ;
 
