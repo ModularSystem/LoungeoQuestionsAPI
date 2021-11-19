@@ -1,21 +1,35 @@
+const pool = require('../poolConfig');
 
 module.exports = {
 
-select: async (client, params) => {
-  const {product_id} = params;
-  const result = await client.query(`SELECT * FROM answers WHERE product_id = ${product_id} LIMIT 10`);
-  return result.rows;
-},
+  select: async (params) => {
+    const { questionID, count, offset } = params;
+    const result = await pool.query(`SELECT * FROM answers WHERE question_id = ${questionID} LIMIT ${count} OFFSET ${offset}`);
+    return result.rows;
+  },
 
-insert: async (client, params) => {
-  const {body, name, email, question_id} = params;
-  const result = await client.query(`INSERT INTO answers (question_id, body, answerer_name, email) VALUES (${question_id}, '${body}','${name}', '${email}' )`)
-  .catch(e => e)
-  return result
-},
+  insert: async (params) => {
+    const {
+      body, name, email, questionID,
+    } = params;
+    const date = new Date().getTime();
+    const result = await pool.query(`INSERT INTO answers (question_id, body, answerer_name, email, date) VALUES (${questionID}, '${body}','${name}', '${email}', ${date} )`)
+      .catch((e) => e);
+    return result;
+  },
 
-report: async (client) => {
+  report: async (id) => {
+    const result = await pool.query(`
+      UPDATE answers SET reported = 1 where id = ${id}
+    `);
+    return result;
+  },
 
-}
+  helpful: async (id) => {
+    const result = await pool.query(`
+      UPDATE answers SET helpfulness = helpfulness+1 where id = ${id}
+    `);
+    return result;
+  },
 
-}
+};

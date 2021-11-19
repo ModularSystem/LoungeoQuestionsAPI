@@ -1,64 +1,87 @@
-
+const pool = require('../poolConfig');
 
 module.exports = {
 
+  select: async (params) => {
+    const { productID, count, offset } = params;
+    const result = await pool.query(`
+      SELECT
+        question_id,
+        product_id,
+        question_body,
+        to_timestamp(question_date/1000) as question_date,
+        name,
+        email,
+        question_helpfulness,
+        (
+          SELECT json_object_agg(id, answer) FROM (
+            SELECT
+              id,
+              body,
+              to_timestamp(date/1000) as date,
+              answerer_name,
+              reported,
+              helpfulness
 
+             FROM answers WHERE answers.question_id = questions.question_id AND reported = 0
+           ) as answer
+      ) as answers FROM QUESTIONS WHERE product_id = ${productID} AND reported = 0 LIMIT ${count} OFFSET ${offset}
+      `)
+      .catch((e) => e);
+    if (result.rows) { result.rows.forEach((q) => { if (!q.answers) q.answers = {}; }); }
+    if (result instanceof Error) { return result; }
+    return result.rows;
+  },
 
+  /// /DONE WITH PROMISES
+  // select: async (client, params, cb) => {
+  //   const {product_id, count} = params;
+  //   const result = await client.query(
+  // `SELECT * FROM QUESTIONS WHERE product_id = ${product_id} LIMIT ${count}`);
+  //   Promise.all(result.rows.map( async (question) => {
+  //     const answers = await client.query(
+  // `SELECT * FROM ANSWERS WHERE question_id = ${question.question_id}`);
+  //     let filtered = answers.rows.filter( answer => !answer.reported)
+  //     filtered = filtered.map( answer => {
+  //       answer.date = new Date(Number(answer.date))
+  //       return answer;
+  //     })
+  //     let answerObj = {};
+  //     filtered.forEach( answer => answerObj[answer.id] = answer)
+  //     question.answers = answerObj;
+  //     return question
+  //   }))
+  //   .then((data) => {
+  //     cb(data)
+  //   })
+  // },
 
-select: async (client, params) => {
-  const {product_id, count} = params;
-  const result = await client.query(`
-  SELECT *, (
-    SELECT json_agg(x) FROM (
-      SELECT * FROM answers WHERE answers.question_id = questions.question_id
-    ) x
-  ) answers FROM QUESTIONS WHERE product_id = ${product_id} LIMIT ${count}
-  `)
-  .catch( e => e)
-  // console.log(result.rows[0])
-  if(result instanceof Error) {return result}
-  const filtered = result.rows.filter( q => !q.reported)
-  filtered.forEach( question => {
-    question.question_date = new Date(Number(question.question_date))
-    const filteredAnswers = question.answers ? question.answers.filter( answer => !answer.reported) : [];
-     filteredAnswers.forEach( answer => {
-      answer.date = new Date(Number(answer.date))
-    })
-    let answerObj = {};
-    filteredAnswers.forEach( answer => answerObj[answer.id] = answer)
-    question.answers = answerObj;
-  })
-  return result.rows
-},
+  insert: async (params) => {
+    const {
+      body, name, email, productID,
+    } = params;
 
-////DONE WITH PROMISES
-// select: async (client, params, cb) => {
-//   const {product_id, count} = params;
-//   const result = await client.query(`SELECT * FROM QUESTIONS WHERE product_id = ${product_id} LIMIT ${count}`);
-//   Promise.all(result.rows.map( async (question) => {
-//     const answers = await client.query(`SELECT * FROM ANSWERS WHERE question_id = ${question.question_id}`);
-//     let filtered = answers.rows.filter( answer => !answer.reported)
-//     filtered = filtered.map( answer => {
-//       answer.date = new Date(Number(answer.date))
-//       return answer;
-//     })
-//     let answerObj = {};
-//     filtered.forEach( answer => answerObj[answer.id] = answer)
-//     question.answers = answerObj;
-//     return question
-//   }))
-//   .then((data) => {
-//     cb(data)
-//   })
-// },
+    const questionDate = new Date().getTime();
+    const result = await pool.query(
+      `INSERT INTO questions(product_id, question_body, question_date, name, email) VALUES (${productID}, '${body}',${questionDate}, '${name}', '${email}')
+      `,
+    )
+      .catch((e) => e);
+    return result;
+  },
 
-insert: async (client, params) => {
-  const { body, name, email, product_id } = params;
+  report: async (id) => {
+    const result = await pool.query(`
+      UPDATE questions SET reported = 1 where question_id = ${id}
+    `);
+    return result;
+  },
 
-  const question_date = new Date().getTime();
-  const result = await client.query(`INSERT INTO questions(product_id, question_body, question_date, name, email) VALUES (${product_id}, '${body}',${question_date}, '${name}', '${email}')`)
-  .catch(e => e)
-  return result;
-}
+  helpful: async (id) => {
+    const result = await pool.query(`
+    UPDATE questions SET question_helpfulness = question_helpfulness+1 where question_id = ${id}
+  `);
+    return result;
+  },
 
-}
+};
