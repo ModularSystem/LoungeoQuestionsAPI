@@ -1,5 +1,5 @@
 const express = require('express');
-const {question} = require('./models')
+const {question, answer} = require('./models')
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -38,10 +38,19 @@ app.get('/qa/questions', async (req, res) => {
 })
 
 app.post('/qa/questions', async (req, res) => {
-
   // console.log(req.body)
   await question.insert(pool, req.body)
   // console.log(req.query)
-
 })
+
+app.post('/qa/questions/:question_id/answers', async (req, res) => {
+  const {question_id} = req.params
+  const params = {question_id, ...req.body}
+  const result = await answer.insert(pool, params)
+
+  result instanceof Error ?
+    res.status(409).send()
+    : res.status(201).send()
+})
+
 module.exports = app;

@@ -19,7 +19,7 @@ select: async (client, params) => {
   const filtered = result.rows.filter( q => !q.reported)
   filtered.forEach( question => {
     question.question_date = new Date(Number(question.question_date))
-    const filteredAnswers = question.answers.filter( answer => !answer.reported)
+    const filteredAnswers = question.answers ? question.answers.filter( answer => !answer.reported) : [];
      filteredAnswers.forEach( answer => {
       answer.date = new Date(Number(answer.date))
     })
