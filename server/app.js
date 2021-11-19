@@ -29,25 +29,29 @@ app.get('/qa/questions', async (req, res) => {
 
   const results = await question.select(pool,{product_id, count})
 
-  const responseObj = {
-      product_id,
-      results
+  if(results instanceof Error ){
+    res.status(404).send()
+  } else {
+    const responseObj = {
+        product_id,
+        results
+    }
+    res.status(200).send(responseObj)
   }
-  res.status(200).send(responseObj)
 
 })
 
 app.post('/qa/questions', async (req, res) => {
-  // console.log(req.body)
-  await question.insert(pool, req.body)
-  // console.log(req.query)
+  const result = await question.insert(pool, req.body)
+  result instanceof Error ?
+    res.status(409).send()
+    : res.status(201).send()
 })
 
 app.post('/qa/questions/:question_id/answers', async (req, res) => {
   const {question_id} = req.params
   const params = {question_id, ...req.body}
   const result = await answer.insert(pool, params)
-
   result instanceof Error ?
     res.status(409).send()
     : res.status(201).send()

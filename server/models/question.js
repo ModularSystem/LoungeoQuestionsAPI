@@ -14,8 +14,9 @@ select: async (client, params) => {
     ) x
   ) answers FROM QUESTIONS WHERE product_id = ${product_id} LIMIT ${count}
   `)
-  .catch( e => console.log(e))
+  .catch( e => e)
   // console.log(result.rows[0])
+  if(result instanceof Error) {return result}
   const filtered = result.rows.filter( q => !q.reported)
   filtered.forEach( question => {
     question.question_date = new Date(Number(question.question_date))
@@ -27,7 +28,6 @@ select: async (client, params) => {
     filteredAnswers.forEach( answer => answerObj[answer.id] = answer)
     question.answers = answerObj;
   })
-
   return result.rows
 },
 
@@ -57,8 +57,8 @@ insert: async (client, params) => {
 
   const question_date = new Date().getTime();
   const result = await client.query(`INSERT INTO questions(product_id, question_body, question_date, name, email) VALUES (${product_id}, '${body}',${question_date}, '${name}', '${email}')`)
-  .catch( console.log)
-  console.log('try here', result)
+  .catch(e => e)
+  return result;
 }
 
 }
