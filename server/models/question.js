@@ -27,9 +27,8 @@ module.exports = {
            ) as answer
       ) as answers FROM QUESTIONS WHERE product_id = ${productID} AND reported = 0 LIMIT ${count} OFFSET ${offset}
       `)
-      .catch((e) => e);
+      .catch((e) => { throw e; });
     if (result.rows) { result.rows.forEach((q) => { if (!q.answers) q.answers = {}; }); }
-    if (result instanceof Error) { return result; }
     return result.rows;
   },
 
@@ -66,21 +65,23 @@ module.exports = {
       `INSERT INTO questions(product_id, question_body, question_date, name, email) VALUES (${productID}, '${body}',${questionDate}, '${name}', '${email}')
       `,
     )
-      .catch((e) => e);
+      .catch((e) => { throw e; });
     return result;
   },
 
   report: async (id) => {
     const result = await pool.query(`
       UPDATE questions SET reported = 1 where question_id = ${id}
-    `);
+    `)
+      .catch((e) => { throw e; });
     return result;
   },
 
   helpful: async (id) => {
     const result = await pool.query(`
     UPDATE questions SET question_helpfulness = question_helpfulness+1 where question_id = ${id}
-  `);
+  `)
+      .catch((e) => { throw e; });
     return result;
   },
 
