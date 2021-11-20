@@ -20,7 +20,6 @@ app.get('/qa/questions', async (req, res) => {
   count = count || 5;
   page = page || 1;
   const offset = count * (page - 1);
-
   try {
     const results = await question.select({ productID, count, offset });
     const responseObj = {
