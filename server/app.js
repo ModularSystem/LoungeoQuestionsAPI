@@ -20,8 +20,10 @@ app.get('/qa/questions', async (req, res) => {
       productID,
       results,
     };
+    console.log('worked')
     res.status(200).send(responseObj);
   } catch (e) {
+    console.log(e)
     res.status(404).send();
   }
 });

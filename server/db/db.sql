@@ -1,8 +1,8 @@
-/* psql -U postgres < server/db/schema.sql  THIS ONE!!!*/
+/* psql -U postgres < server/db/db.sql  THIS ONE!!!*/
 DROP DATABASE IF EXISTS qanda;
 CREATE DATABASE qanda;
-\ c qanda;
-DROP TABLE IF EXISTS answer_photos;
+\c qanda;
+DROP TABLE IF EXISTS answer_loadphotos;
 DROP TABLE IF EXISTS answers;
 DROP TABLE IF EXISTS questions;
 -- DROP TABLE IF EXISTS users;
