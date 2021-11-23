@@ -8,7 +8,7 @@ const { question, answer } = require('./models');
 
 
 
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
   res.send('Get');
 });
 
