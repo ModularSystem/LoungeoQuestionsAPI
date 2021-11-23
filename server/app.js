@@ -7,15 +7,6 @@ app.use(express.urlencoded({ extended: true }));
 const { question, answer } = require('./models');
 
 
-
-app.get('*', (req, res) => {
-  res.send('Get');
-});
-
-app.post('/', (req, res) => {
-  res.send('Post');
-});
-
 app.get('/qa/questions', async (req, res) => {
   console.log('request incoming')
   const { product_id: productID } = req.query;
