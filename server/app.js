@@ -8,7 +8,6 @@ const { question, answer } = require('./models');
 
 
 app.get('/qa/questions', async (req, res) => {
-  console.log('request incoming')
   const { product_id: productID } = req.query;
   let { count, page } = req.query;
   count = count || 5;
@@ -20,10 +19,8 @@ app.get('/qa/questions', async (req, res) => {
       productID,
       results,
     };
-    console.log('worked')
     res.status(200).send(responseObj);
   } catch (e) {
-    console.log(e)
     res.status(404).send();
   }
 });
