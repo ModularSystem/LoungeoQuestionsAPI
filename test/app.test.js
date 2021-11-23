@@ -34,11 +34,9 @@ describe('testing server', () => {
   it('should return answers with a photos array', () => request(app).get('/qa/questions/216590/answers')
     .expect(200)
     .then((res) => {
-      console.log(res.body)
       expect(res.body.length).to.be.above(0);
     })
-    .catch((e) => console.log(e))
-  );
+    .catch((e) => console.log(e)));
 
   it('should return empty array for non-existent question', () => request(app).get('/qa/questions/31415155/answers')
     .expect(200)

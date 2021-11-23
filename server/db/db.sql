@@ -1,7 +1,7 @@
 /* psql -U postgres < server/db/schema.sql  THIS ONE!!!*/
 DROP DATABASE IF EXISTS qanda;
 CREATE DATABASE qanda;
-\c qanda;
+\ c qanda;
 DROP TABLE IF EXISTS answer_photos;
 DROP TABLE IF EXISTS answers;
 DROP TABLE IF EXISTS questions;
@@ -40,3 +40,7 @@ CREATE TABLE answer_photos (
   url VARCHAR(500) NOT NULL,
   FOREIGN KEY (answer_id) REFERENCES answers(id) ON DELETE CASCADE
 );
+CREATE INDEX question_id_index ON answers (question_id);
+CREATE INDEX answer_id_index ON answer_photos (answer_id);
+CREATE INDEX answer_reported_index ON answers (reported);
+CREATE INDEX quesiton_reported_index ON questions (reported);
