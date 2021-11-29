@@ -2,7 +2,7 @@
 DROP DATABASE IF EXISTS qanda;
 CREATE DATABASE qanda;
 \c qanda;
-DROP TABLE IF EXISTS answer_loadphotos;
+DROP TABLE IF EXISTS answer_photos;
 DROP TABLE IF EXISTS answers;
 DROP TABLE IF EXISTS questions;
 -- DROP TABLE IF EXISTS users;

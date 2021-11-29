@@ -6,6 +6,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const { question, answer } = require('./models');
 
+app.use(express.static('/public'))
 
 app.get('/qa/questions', async (req, res) => {
   const { product_id: productID } = req.query;
