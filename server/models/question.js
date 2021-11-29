@@ -3,6 +3,7 @@ const pool = require('../db/poolConfig');
 module.exports = {
 
   select: async (params) => {
+
     const { productID, count, offset } = params;
     const result = await pool.query(`
       SELECT
@@ -28,6 +29,7 @@ module.exports = {
       ) as answers FROM QUESTIONS WHERE product_id = ${productID} AND reported = 0 LIMIT ${count} OFFSET ${offset}
       `)
       .catch((e) => { throw e; });
+
     if (result.rows) { result.rows.forEach((q) => { if (!q.answers) q.answers = {}; }); }
     return result.rows;
   },

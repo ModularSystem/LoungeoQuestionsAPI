@@ -1,5 +1,5 @@
 const express = require('express');
-const path = require('path')
+const path = require('path');
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -24,6 +24,7 @@ app.get('/qa/questions', async (req, res) => {
     };
     res.status(200).send(responseObj);
   } catch (e) {
+    console.log(e)
     res.status(404).send();
   }
 });

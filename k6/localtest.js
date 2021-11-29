@@ -3,7 +3,7 @@ import { sleep } from 'k6';
 
 
 export const options = {
-  vus: 1000,
+  vus: 10,
   duration: '10s',
 
   // thresholds: {
