@@ -3,8 +3,8 @@ const pool = require('../db/poolConfig');
 module.exports = {
 
   select: async (params) => {
-
     const { productID, count, offset } = params;
+
     const result = await pool.query(`
       SELECT
         question_id,
