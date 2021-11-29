@@ -1,5 +1,5 @@
 const express = require('express');
-
+const path = require('path')
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -7,8 +7,7 @@ app.use(express.urlencoded({ extended: true }));
 const { question, answer } = require('./models');
 
 app.get('/loaderio-0f17028868e34d7bd1b89796b40b85c3.txt', (req, res) => {
-
-  res.sendFile('../public/loaderio-0f17028868e34d7bd1b89796b40b85c3.txt')
+  res.sendFile(path.join(__dirname, '/public/loaderio-0f17028868e34d7bd1b89796b40b85c3.txt'))
 })
 
 app.get('/qa/questions', async (req, res) => {
