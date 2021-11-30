@@ -20,7 +20,7 @@ app.get('/qa/questions', async (req, res) => {
     const results = await question.select({ productID, count, offset });
     const responseObj = {
       productID,
-      results,
+      results: results.rows,
     };
     res.status(200).send(responseObj);
   } catch (e) {

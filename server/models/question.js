@@ -2,10 +2,10 @@ const pool = require('../db/poolConfig');
 
 module.exports = {
 
-  select: async (params) => {
+  select: (params) => {
     const { productID, count, offset } = params;
 
-    const result = await pool.query(`
+    return pool.query(`
       SELECT
         question_id,
         product_id,
@@ -27,11 +27,7 @@ module.exports = {
              FROM answers WHERE answers.question_id = questions.question_id AND reported = 0
            ) as answer
       ) as answers FROM QUESTIONS WHERE product_id = ${productID} AND reported = 0 LIMIT ${count} OFFSET ${offset}
-      `)
-      .catch((e) => { throw e; });
-
-    if (result.rows) { result.rows.forEach((q) => { if (!q.answers) q.answers = {}; }); }
-    return result.rows;
+      `);
   },
 
   // / /DONE WITH PROMISES
@@ -65,33 +61,23 @@ module.exports = {
   //   }));
   // },
 
-  insert: async (params) => {
+  insert: (params) => {
     const {
       body, name, email, productID,
     } = params;
     const questionDate = new Date().getTime();
-    const result = await pool.query(
+    return pool.query(
       `INSERT INTO questions(product_id, question_body, question_date, name, email) VALUES (${productID}, '${body}',${questionDate}, '${name}', '${email}')
       `,
-    )
-      .catch((e) => { throw e; });
-    return result;
+    );
   },
 
-  report: async (id) => {
-    const result = await pool.query(`
+  report: (id) => pool.query(`
       UPDATE questions SET reported = 1 where question_id = ${id}
-    `)
-      .catch((e) => { throw e; });
-    return result;
-  },
+    `),
 
-  helpful: async (id) => {
-    const result = await pool.query(`
+  helpful: (id) => pool.query(`
     UPDATE questions SET question_helpfulness = question_helpfulness+1 where question_id = ${id}
-  `)
-      .catch((e) => { throw e; });
-    return result;
-  },
+  `),
 
 };
