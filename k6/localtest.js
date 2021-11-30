@@ -3,7 +3,7 @@ import { sleep } from 'k6';
 
 
 export const options = {
-  vus: 100,
+  vus: 10,
   duration: '10s',
 
   // thresholds: {
@@ -25,10 +25,10 @@ export const options = {
 export default () => {
   const randomId = Math.floor(Math.random() * 500000)
   // console.log(randomId)
-  // http.get(`http://localhost:3000/qa/questions/?product_id=${randomId}`, { tags: { type: 'oneProduct' } });
+  http.get(`http://localhost:3000/qa/questions/?product_id=${randomId}`, { tags: { type: 'oneProduct' } });
   // console.log(res.body)
   // http.get(`http://localhost:3000/qa/questions/${randomId}/answers`, { tags: { type: 'answers' } });
-  http.post(`http://localhost:3000/qa/questions/${randomId}/answers`, {body: 'hi', name:'hi', email:'hi', productID: 61576}, { tags: { type: 'questionsPost' } });
+  // http.post(`http://localhost:3000/qa/questions/${randomId}/answers`, {body: 'hi', name:'hi', email:'hi', productID: 61576}, { tags: { type: 'questionsPost' } });
 
 
   // sleep(1);

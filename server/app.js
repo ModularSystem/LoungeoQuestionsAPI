@@ -8,16 +8,18 @@ const { question, answer } = require('./models');
 
 app.get('/loaderio-0f17028868e34d7bd1b89796b40b85c3.txt', (req, res) => {
   res.sendFile(path.join(__dirname, '/public/loaderio-0f17028868e34d7bd1b89796b40b85c3.txt'))
-})
+});
 
 app.get('/qa/questions', async (req, res) => {
   const { product_id: productID } = req.query;
   let { count, page } = req.query;
   count = count || 5;
   page = page || 1;
+  console.log('working')
   const offset = count * (page - 1);
   try {
     const results = await question.select({ productID, count, offset });
+
     const responseObj = {
       productID,
       results: results.rows,
@@ -49,7 +51,7 @@ app.get('/qa/questions/:question_id/answers', async (req, res) => {
   };
   try {
     const answers = await answer.select(params);
-    res.status(200).send(answers);
+    res.status(200).send(answers.rows);
   } catch (e) {
     res.status(404).send();
   }
