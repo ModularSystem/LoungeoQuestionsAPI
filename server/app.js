@@ -15,7 +15,7 @@ app.get('/qa/questions', async (req, res) => {
   let { count, page } = req.query;
   count = count || 5;
   page = page || 1;
-  console.log('working')
+
   const offset = count * (page - 1);
   try {
     const results = await question.select({ productID, count, offset });
