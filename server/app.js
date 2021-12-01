@@ -27,6 +27,7 @@ app.get('/qa/questions', async (req, res) => {
     res.status(200).send(responseObj);
   } catch (e) {
     console.log(e)
+    console.log({productID})
     res.status(404).send();
   }
 });
