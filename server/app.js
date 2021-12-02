@@ -11,7 +11,7 @@ app.get('/loaderio-c39be31767a904bfaf0701a31ce8614b.txt', (req, res) => {
 });
 
 app.get('/qa/questions', async (req, res) => {
-  console.log('ME')
+
   const { product_id: productID } = req.query;
   let { count, page } = req.query;
   count = count || 5;
