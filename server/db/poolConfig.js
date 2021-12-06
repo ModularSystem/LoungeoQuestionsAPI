@@ -10,3 +10,5 @@ const credentials = {
 const pool = new Pool(credentials);
 
 module.exports = pool;
+
+
