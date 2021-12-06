@@ -1,19 +1,6 @@
 const pool = require('../db/poolConfig');
 
 module.exports = {
-  // ///// PROMISES
-  // select: async (params) => {
-  //   const { questionID, count, offset } = params;
-  //   const result = await pool.query(`SELECT * FROM answers WHERE question_id = ${questionID} LIMIT ${count} OFFSET ${offset}`);
-  //   return Promise.all(result.rows.map(async (answer) => {
-  //     const photos = await pool.query(
-  //       `SELECT * FROM answer_photos WHERE answer_id = ${answer.id}`,
-  //     );
-  //     answer.photos = photos.rows;
-  //     return answer;
-  //   }));
-  // },
-  /// JSON AGG
   select: (params) => {
     const { questionID, count, offset } = params;
     return pool.query(`SELECT *,  (

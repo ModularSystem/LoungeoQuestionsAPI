@@ -7,11 +7,10 @@ app.use(express.urlencoded({ extended: true }));
 const { question, answer } = require('./models');
 
 app.get('/loaderio-c39be31767a904bfaf0701a31ce8614b.txt', (req, res) => {
-  res.sendFile(path.join(__dirname, '/public/loaderio-c39be31767a904bfaf0701a31ce8614b.txt'))
+  res.sendFile(path.join(__dirname, '/public/loaderio-c39be31767a904bfaf0701a31ce8614b.txt'));
 });
 
 app.get('/qa/questions', async (req, res) => {
-  console.log('ME')
   const { product_id: productID } = req.query;
   let { count, page } = req.query;
   count = count || 5;
@@ -28,7 +27,7 @@ app.get('/qa/questions', async (req, res) => {
     res.status(200).send(responseObj);
   } catch (e) {
     console.log(e)
-    console.log({productID})
+
     res.status(404).send();
   }
 });

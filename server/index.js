@@ -8,4 +8,3 @@ if (require.main === module) {
     console.log(`Questions and Answers API running on ${port}`);
   });
 }
-

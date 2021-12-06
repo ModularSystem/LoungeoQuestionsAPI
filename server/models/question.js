@@ -30,37 +30,6 @@ module.exports = {
       `);
   },
 
-  // / /DONE WITH PROMISES
-  // select: async (params) => {
-  //   const { productID, count } = params;
-  //   const result = await pool.query(
-  //     `SELECT * FROM QUESTIONS WHERE product_id = ${productID} LIMIT ${count}`,
-  //   );
-  //   return Promise.all(result.rows.map(async (question) => {
-  //     const answers = await pool.query(
-  //       `SELECT
-  //       id,
-  //         body,
-  //         to_timestamp(date/1000) as date,
-  //         answerer_name,
-  //         reported,
-  //         helpfulness
-  //        FROM ANSWERS WHERE question_id = ${question.question_id} AND reported = 0`,
-  //     );
-  //     await Promise.all(answers.rows.map(async (answer) => {
-  //       const photos = await pool.query(
-  //         `SELECT * FROM answer_photos WHERE answer_id = ${answer.id} `,
-  //       );
-  //       answer.photos = photos.rows;
-  //       // answer.photos = photos;
-  //     }));
-  //     const answerObj = {};
-  //     answers.rows.forEach((answer) => { answerObj[answer.id] = answer; });
-  //     question.answers = answerObj;
-  //     return question;
-  //   }));
-  // },
-
   insert: (params) => {
     const {
       body, name, email, productID,
